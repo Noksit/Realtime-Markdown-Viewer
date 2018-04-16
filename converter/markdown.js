@@ -69,23 +69,29 @@ var parseCode = function (str) {
     while ((stra = codeRegExp.exec(str)) !== null) {
         str = str.replace(stra[0], '<pre>' + stra[1] + '</pre>');
     }
+
+ var parseBlockQuote = function(str) {
+  var quoteRegExp = /\:\"(.*?)\"\:/
+  var stra = [];
+  while ((stra = quoteRegExp.exec(str)) !== null) {
+    str = str.replace(stra[0], '<blockquote>' + stra[1] + '</blockquote>');
+  }
+  return str;
+ }
+
+var markdown = {
+  parse: function (str, strict) {
+    'use strict';
+    str = parseHeadline(str);
+    str = parseBold(str);
+    str = parseItalic(str);
+    str = parseStrong(str);
+    str = parseHorizontaleLine(str);
+    str = parseLink(str);
+    str = parseBlockQuote(str);
+    str = parseCode(str);
     return str;
 };
 
-
-var markdown = {
-    parse: function (str, strict) {
-        'use strict';
-        str = parseNewLine(str);
-        str = parseHeadline(str);
-        str = parseBold(str);
-        str = parseItalic(str);
-        str = parseStrong(str);
-        str = parseHorizontaleLine(str);
-        str = parseLink(str);
-        str = parseCode(str);
-        return str;
-    }
-};
 
 module.exports = markdown;
